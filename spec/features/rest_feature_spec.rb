@@ -70,4 +70,15 @@ feature 'Restaurants' do
       expect(page).to have_content("Restaurant deleted successfully")
     end
   end
+
+  context 'invalid restaurant' do
+    it 'does not let you submmit a name that is too short' do
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in :Name, with: 'na'
+      click_button 'Create Restaurant'
+      expect(page).not_to have_css 'h2', text: 'na'
+      expect(page).to have_content 'error'
+    end
+  end
 end
