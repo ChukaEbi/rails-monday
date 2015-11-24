@@ -3,7 +3,7 @@ feature 'User can sign in and out' do
     it "should see a 'sign in' link and a 'sign up' link" do
       visit('/')
       expect(page).to have_link('Sign in')
-      expect(page).to hsve_link('Sign up')
+      expect(page).to have_link('Sign up')
     end
 
     it "should not see the 'Sign out' link" do
