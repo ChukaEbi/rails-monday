@@ -45,4 +45,29 @@ feature 'Restaurants' do
       expect(current_path).to eq "/restaurants/#{bocado.id}"
     end
   end
+
+  context 'editing restaurants' do
+
+    before { Restaurant.create name: 'Bocado' }
+
+    scenario 'let a user edit a restaurant' do
+      visit '/restaurants'
+      click_link 'Edit Bocado'
+      fill_in 'Name', with: 'Bocado: Vegan Restaurant'
+      click_button 'Update Restaurant'
+      expect(page).to have_content 'Bocado: Vegan Restaurant'
+      expect(current_path).to eq '/restaurants'
+    end
+  end
+
+  context 'removing restaurants' do
+    before { Restaurant.create(name: 'Abokado') }
+
+    scenario 'removes a restaurant when the user clicks a delete link' do
+      visit '/restaurants'
+      click_link 'Delete Abokado'
+      expect(page).not_to have_content('Abokado')
+      expect(page).to have_content("Restaurant deleted successfully")
+    end
+  end
 end
