@@ -1,6 +1,17 @@
 require 'rails_helper'
 
 feature 'Restaurants' do
+
+  before do
+      visit '/'
+      click_link('Sign up')
+      fill_in 'Email', with: 'test@example.com'
+      fill_in 'Password', with: 'testtest'
+      fill_in 'Password confirmation', with: 'testtest'
+      click_button 'Sign up'
+    end
+
+
   context 'No restaurants have been added' do
     scenario 'Should display a prompt to add a restaurant' do
       visit '/restaurants'
@@ -48,10 +59,10 @@ feature 'Restaurants' do
 
   context 'editing restaurants' do
 
-    before { Restaurant.create name: 'Bocado' }
 
     scenario 'let a user edit a restaurant' do
       visit '/restaurants'
+      add_restaurant('Bocado')
       click_link 'Edit Bocado'
       fill_in 'Name', with: 'Bocado: Vegan Restaurant'
       click_button 'Update Restaurant'
@@ -61,10 +72,10 @@ feature 'Restaurants' do
   end
 
   context 'removing restaurants' do
-    before { Restaurant.create(name: 'Abokado') }
-
+    
     scenario 'removes a restaurant when the user clicks a delete link' do
       visit '/restaurants'
+      add_restaurant('Abokado')
       click_link 'Delete Abokado'
       expect(page).not_to have_content('Abokado')
       expect(page).to have_content("Restaurant deleted successfully")
