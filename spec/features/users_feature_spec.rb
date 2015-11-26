@@ -58,5 +58,26 @@ feature 'User can sign in and out' do
       click_link 'Delete Bocado'
       expect(page).to have_content('Bocado')
     end
+    it "cannot review a restaurant more than once" do
+      click_link('Sign out')
+      sign_up('a@b.com','12341234')
+      click_link('Review Bocado')
+      fill_in 'Thoughts', with: "so so"
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
+      expect(page).not_to have_content('Review Bocado')
+    end
+
+    it 'cannot delete a review made by another user' do
+      click_link('Sign out')
+      sign_up('b@c.com','12345678')
+      click_link('Review Bocado')
+      fill_in 'Thoughts', with: "so so"
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
+      click_link('Sign out')
+      sign_up('a@b.com','12345678')
+      expect(page).not_to have_link('Delete your review for Bocado')
+    end
   end
 end

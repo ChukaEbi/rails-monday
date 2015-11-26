@@ -1,7 +1,9 @@
 describe Review, type: :model do
   it { is_expected.to  belong_to :restaurant }
 
+  it { is_expected.to belong_to :user }
   let!(:abokado) {Restaurant.create(name: 'Abokado')}
+
 
   it 'should remove the review wheen the restaurant is deleted' do
     r = Review.new(thoughts: "meh meh", rating: 3)
